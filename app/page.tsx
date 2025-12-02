@@ -19,6 +19,7 @@ export default function Home() {
           operation,
         });
         setResult(response);
+        console.log("ipc");
       }
       else if (method === 'fastapi') {
         const res = await fetch('http://127.0.0.1:8000/calculate', {
@@ -28,6 +29,7 @@ export default function Home() {
         });
         const data = await res.json();
         setResult(data.result);
+        console.log("fastapi");
       }
       else if (method === 'jsonrpc') {
         const payload = {
@@ -43,6 +45,7 @@ export default function Home() {
         });
         const data = await res.json();
         setResult(data.result ?? data.error?.message ?? "Error");
+        console.log("jsonrpc");
       }
     } catch (error: any) {
       setResult(`Error: ${error.message}`);
