@@ -2,13 +2,38 @@
   "name": "my-calculator",
   "version": "0.1.0",
   "private": true,
+  "main": "main.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev:ipc": "concurrently \"npm run dev\" \"electron .\"",
+    "dev:fastapi": "concurrently \"python backend/fastapi_server.py\" \"npm run dev\" \"electron .\"",
+    "dev:jsonrpc": "concurrently \"python backend/jsonrpc_server.py\" \"npm run dev\" \"electron .\"",
+    "dev:all": "concurrently \"python backend/fastapi_server.py\" \"python backend/jsonrpc_server.py\" \"npm run dev\" \"electron .\"",
+    "electron:build": "npm run build && electron-builder"
+  },
+  "build": {
+    "appId": "com.example.calculator",
+    "productName": "CalculatorApp",
+    "files": [
+      "out/**/*",
+      "main.js",
+      "preload.js",
+      "electron.d.ts"
+    ],
+    "extraResources": [
+      "backend/fastapi_server.exe",
+      "backend/jsonrpc_server.exe",
+      "backend/script.exe"
+    ],
+    "win": {
+      "target": "nsis"
+    }
   },
   "dependencies": {
+    "clsx": "^2.1.1",
+    "electron-is-dev": "^3.0.1",
+    "lucide-react": "^0.555.0",
     "next": "16.0.3",
     "react": "19.2.0",
     "react-dom": "19.2.0"
@@ -18,6 +43,10 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "baseline-browser-mapping": "^2.8.32",
+    "concurrently": "^9.2.1",
+    "electron": "^39.2.1",
+    "electron-builder": "^26.0.12",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "tailwindcss": "^4",
